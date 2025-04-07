@@ -18,17 +18,28 @@ var series = [
     new Serie(5, "Sherlock", "BBC", 4, "Sherlock depicts consulting detective Sherlock Holmes (Benedict Cumberbatch) solving various mysteries in modern-day London. Holmes is assisted by his flatmate and friend, Dr John Watson (Martin Freeman), who has returned from military service in Afghanistan with the Royal Army Medical Corps", "https://www.bbc.co.uk/programmes/b018ttws", "https://i.imgur.com/02B7qhj.jpg"),
     new Serie(6, "A Very English Scandal", "BBC", 2, "A Very English Scandal is a fact-based three-part British television comedy-drama miniseries based on John Preston's book of the same name.", "https://www.bbc.co.uk/programmes/p065smy4", "https://i.imgur.com/D4y3DrQ.jpg"),
 ];
-function renderTable(series) {
-    var container = document.getElementById("table-container");
-    if (!container)
-        return;
-    var tableHTML = "\n    <table class=\"table table-striped\">\n      <thead>\n        <tr>\n          <th>#</th>\n          <th>Name</th>\n          <th>Channel</th>\n          <th>Seasons</th>\n        </tr>\n      </thead>\n      <tbody>\n  ";
-    var totalSeasons = 0;
-    series.forEach(function (serie) {
-        tableHTML += "\n      <tr>\n        <th>".concat(serie.id, "</th>\n        <td><a href=\"#\">").concat(serie.name, "</a></td>\n        <td>").concat(serie.channel, "</td>\n        <td>").concat(serie.seasons, "</td>\n      </tr>\n    ");
-        totalSeasons += serie.seasons;
-    });
-    tableHTML += "\n      </tbody>\n    </table>\n    <div class=\"average\">\n      Seasons average: ".concat((totalSeasons / series.length).toFixed(2), "\n    </div>\n  ");
-    container.innerHTML = tableHTML;
+function mostrarTablaSeries(series) {
+    var tableContainer = document.getElementById('table-container');
+    var table = document.createElement('table');
+    table.classList.add('table', 'table-striped');
+    table.innerHTML = "\n    <thead>\n      <tr>\n        <th>#</th>\n        <th>Nombre</th>\n        <th>Canal</th>\n        <th>Temporadas</th>\n      </tr>\n    </thead>\n    <tbody>\n      ".concat(series.map(function (serie) { return "\n        <tr data-id=\"".concat(serie.id, "\" class=\"serie-row\" style=\"cursor:pointer\">\n          <td>").concat(serie.id, "</td>\n          <td>").concat(serie.name, "</td>\n          <td>").concat(serie.channel, "</td>\n          <td>").concat(serie.seasons, "</td>\n        </tr>\n      "); }).join(''), "\n    </tbody>\n  ");
+    tableContainer.appendChild(table);
+    agregarEventosFila(series);
 }
-renderTable(series);
+function agregarEventosFila(series) {
+    var filas = document.querySelectorAll('.serie-row');
+    filas.forEach(function (fila) {
+        fila.addEventListener('click', function () {
+            var id = Number(fila.dataset.id);
+            var serie = series.find(function (s) { return s.id === id; });
+            if (serie) {
+                mostrarCardSerie(serie);
+            }
+        });
+    });
+}
+function mostrarCardSerie(serie) {
+    var cardContainer = document.getElementById('card-container');
+    cardContainer.innerHTML = "\n    <div class=\"card\">\n      <img src=\"".concat(serie.image, "\" class=\"card-img-top\" alt=\"").concat(serie.name, "\">\n      <div class=\"card-body\">\n        <h5 class=\"card-title\">").concat(serie.name, "</h5>\n        <p class=\"card-text\">").concat(serie.description, "</p>\n        <a href=\"").concat(serie.link, "\" class=\"btn btn-primary\" target=\"_blank\">M\u00E1s informaci\u00F3n</a>\n      </div>\n    </div>\n  ");
+}
+mostrarTablaSeries(series);

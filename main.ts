@@ -38,46 +38,61 @@ const series = [
       "https://www.bbc.co.uk/programmes/p065smy4", "https://i.imgur.com/D4y3DrQ.jpg"),
 ];
 
-function renderTable(series: Serie[]): void {
-  const container = document.getElementById("table-container");
-  if (!container) return;
+function mostrarTablaSeries(series: Serie[]): void {
+  const tableContainer = document.getElementById('table-container')!;
+  const table = document.createElement('table');
+  table.classList.add('table', 'table-striped');
 
-  let tableHTML = `
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Name</th>
-          <th>Channel</th>
-          <th>Seasons</th>
-        </tr>
-      </thead>
-      <tbody>
-  `;
-
-  let totalSeasons = 0;
-
-  series.forEach(serie => {
-    tableHTML += `
+  table.innerHTML = `
+    <thead>
       <tr>
-        <th>${serie.id}</th>
-        <td><a href="#">${serie.name}</a></td>
-        <td>${serie.channel}</td>
-        <td>${serie.seasons}</td>
+        <th>#</th>
+        <th>Nombre</th>
+        <th>Canal</th>
+        <th>Temporadas</th>
       </tr>
-    `;
-    totalSeasons += serie.seasons;
-  });
-
-  tableHTML += `
-      </tbody>
-    </table>
-    <div class="average">
-      Seasons average: ${(totalSeasons / series.length).toFixed(2)}
-    </div>
+    </thead>
+    <tbody>
+      ${series.map(serie => `
+        <tr data-id="${serie.id}" class="serie-row" style="cursor:pointer">
+          <td>${serie.id}</td>
+          <td>${serie.name}</td>
+          <td>${serie.channel}</td>
+          <td>${serie.seasons}</td>
+        </tr>
+      `).join('')}
+    </tbody>
   `;
 
-  container.innerHTML = tableHTML;
+  tableContainer.appendChild(table);
+  agregarEventosFila(series);
 }
 
-renderTable(series);
+function agregarEventosFila(series: Serie[]): void {
+  const filas = document.querySelectorAll('.serie-row');
+  filas.forEach(fila => {
+    fila.addEventListener('click', () => {
+      const id = Number((fila as HTMLElement).dataset.id);
+      const serie = series.find(s => s.id === id);
+      if (serie) {
+        mostrarCardSerie(serie);
+      }
+    });
+  });
+}
+
+function mostrarCardSerie(serie: Serie): void {
+  const cardContainer = document.getElementById('card-container')!;
+  cardContainer.innerHTML = `
+    <div class="card">
+      <img src="${serie.image}" class="card-img-top" alt="${serie.name}">
+      <div class="card-body">
+        <h5 class="card-title">${serie.name}</h5>
+        <p class="card-text">${serie.description}</p>
+        <a href="${serie.link}" class="btn btn-primary" target="_blank">Más información</a>
+      </div>
+    </div>
+  `;
+}
+
+mostrarTablaSeries(series);
