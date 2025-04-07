@@ -83,14 +83,14 @@ function agregarEventosFila(series: Serie[]): void {
       }
 
       if (serieEncontrada) {
-        mostrarCardSerie(serieEncontrada);
+        mostrarTarjetaSerie(serieEncontrada);
       }
     });
   });
 }
 
 
-function mostrarCardSerie(serie: Serie): void {
+function mostrarTarjetaSerie(serie: Serie): void {
   const cardContainer = document.getElementById('card-container')!;
   cardContainer.innerHTML = `
     <div class="card">

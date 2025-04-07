@@ -39,12 +39,12 @@ function agregarEventosFila(series) {
                 }
             }
             if (serieEncontrada) {
-                mostrarCardSerie(serieEncontrada);
+                mostrarTarjetaSerie(serieEncontrada);
             }
         });
     });
 }
-function mostrarCardSerie(serie) {
+function mostrarTarjetaSerie(serie) {
     var cardContainer = document.getElementById('card-container');
     cardContainer.innerHTML = "\n    <div class=\"card\">\n      <img src=\"".concat(serie.image, "\" class=\"card-img-top\" alt=\"").concat(serie.name, "\">\n      <div class=\"card-body\">\n        <h5 class=\"card-title\">").concat(serie.name, "</h5>\n        <p class=\"card-text\">").concat(serie.description, "</p>\n        <a href=\"").concat(serie.link, "\" target=\"_blank\">").concat(serie.link, "n</a>\n      </div>\n    </div>\n  ");
 }
