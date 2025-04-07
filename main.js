@@ -22,7 +22,7 @@ function mostrarTablaSeries(series) {
     var tableContainer = document.getElementById('table-container');
     var table = document.createElement('table');
     table.classList.add('table', 'table-striped');
-    table.innerHTML = "\n    <thead>\n      <tr>\n        <th>#</th>\n        <th>Nombre</th>\n        <th>Canal</th>\n        <th>Temporadas</th>\n      </tr>\n    </thead>\n    <tbody>\n      ".concat(series.map(function (serie) { return "\n        <tr data-id=\"".concat(serie.id, "\" class=\"serie-row\" style=\"cursor:pointer\">\n          <td>").concat(serie.id, "</td>\n          <td>").concat(serie.name, "</td>\n          <td>").concat(serie.channel, "</td>\n          <td>").concat(serie.seasons, "</td>\n        </tr>\n      "); }).join(''), "\n    </tbody>\n  ");
+    table.innerHTML = "\n    <thead>\n      <tr>\n        <th>#</th>\n        <th>Name</th>\n        <th>Channel</th>\n        <th>Seasons</th>\n      </tr>\n    </thead>\n    <tbody>\n      ".concat(series.map(function (serie) { return "\n        <tr data-id=\"".concat(serie.id, "\" class=\"serie-row\" style=\"cursor:pointer\">\n          <td>").concat(serie.id, "</td>\n          <td>").concat(serie.name, "</td>\n          <td>").concat(serie.channel, "</td>\n          <td>").concat(serie.seasons, "</td>\n        </tr>\n      "); }).join(''), "\n    </tbody>\n  ");
     tableContainer.appendChild(table);
     agregarEventosFila(series);
 }
@@ -31,15 +31,21 @@ function agregarEventosFila(series) {
     filas.forEach(function (fila) {
         fila.addEventListener('click', function () {
             var id = Number(fila.dataset.id);
-            var serie = series.find(function (s) { return s.id === id; });
-            if (serie) {
-                mostrarCardSerie(serie);
+            var serieEncontrada = undefined;
+            for (var i = 0; i < series.length; i++) {
+                if (series[i].id === id) {
+                    serieEncontrada = series[i];
+                    break;
+                }
+            }
+            if (serieEncontrada) {
+                mostrarCardSerie(serieEncontrada);
             }
         });
     });
 }
 function mostrarCardSerie(serie) {
     var cardContainer = document.getElementById('card-container');
-    cardContainer.innerHTML = "\n    <div class=\"card\">\n      <img src=\"".concat(serie.image, "\" class=\"card-img-top\" alt=\"").concat(serie.name, "\">\n      <div class=\"card-body\">\n        <h5 class=\"card-title\">").concat(serie.name, "</h5>\n        <p class=\"card-text\">").concat(serie.description, "</p>\n        <a href=\"").concat(serie.link, "\" class=\"btn btn-primary\" target=\"_blank\">M\u00E1s informaci\u00F3n</a>\n      </div>\n    </div>\n  ");
+    cardContainer.innerHTML = "\n    <div class=\"card\">\n      <img src=\"".concat(serie.image, "\" class=\"card-img-top\" alt=\"").concat(serie.name, "\">\n      <div class=\"card-body\">\n        <h5 class=\"card-title\">").concat(serie.name, "</h5>\n        <p class=\"card-text\">").concat(serie.description, "</p>\n        <a href=\"").concat(serie.link, "\" target=\"_blank\">").concat(serie.link, "n</a>\n      </div>\n    </div>\n  ");
 }
 mostrarTablaSeries(series);

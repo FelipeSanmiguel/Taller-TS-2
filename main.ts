@@ -47,9 +47,9 @@ function mostrarTablaSeries(series: Serie[]): void {
     <thead>
       <tr>
         <th>#</th>
-        <th>Nombre</th>
-        <th>Canal</th>
-        <th>Temporadas</th>
+        <th>Name</th>
+        <th>Channel</th>
+        <th>Seasons</th>
       </tr>
     </thead>
     <tbody>
@@ -73,13 +73,22 @@ function agregarEventosFila(series: Serie[]): void {
   filas.forEach(fila => {
     fila.addEventListener('click', () => {
       const id = Number((fila as HTMLElement).dataset.id);
-      const serie = series.find(s => s.id === id);
-      if (serie) {
-        mostrarCardSerie(serie);
+      let serieEncontrada: Serie | undefined = undefined;
+
+      for (let i = 0; i < series.length; i++) {
+        if (series[i].id === id) {
+          serieEncontrada = series[i];
+          break;
+        }
+      }
+
+      if (serieEncontrada) {
+        mostrarCardSerie(serieEncontrada);
       }
     });
   });
 }
+
 
 function mostrarCardSerie(serie: Serie): void {
   const cardContainer = document.getElementById('card-container')!;
@@ -89,7 +98,7 @@ function mostrarCardSerie(serie: Serie): void {
       <div class="card-body">
         <h5 class="card-title">${serie.name}</h5>
         <p class="card-text">${serie.description}</p>
-        <a href="${serie.link}" class="btn btn-primary" target="_blank">Más información</a>
+        <a href="${serie.link}" target="_blank">${serie.link}n</a>
       </div>
     </div>
   `;
